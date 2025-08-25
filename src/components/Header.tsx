@@ -1,6 +1,6 @@
 "use client";
 
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -72,7 +72,7 @@ export default function Header() {
                 </Link>
               ))}
               <Button variant="outline" className="text-primary bg-white hover:bg-secondary mt-4">
-                Agendar Visita
+                Solicite seu Orçamento
               </Button>
             </nav>
           </SheetContent>
