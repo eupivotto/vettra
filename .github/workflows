@@ -1,0 +1,36 @@
+# .github/workflows/deploy-static.yml
+name: Deploy Static Site to HostGator
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Static Site
+        run: npm run build:static # Usa o novo script sem Turbopack
+
+      - name: Deploy to HostGator via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./out/ # Envia a pasta 'out'
+          server-dir: public_html/ # Ajuste para o seu diretório de destino
+          # Adiciona uma limpeza de arquivos antigos no servidor
+          dangerous-clean-slate: true
