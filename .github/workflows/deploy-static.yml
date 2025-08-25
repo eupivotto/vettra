@@ -31,6 +31,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./out/ # Envia a pasta 'out'
-          server-dir: public_html/grupovettra.com.br # Ajuste para o seu diretório de destino
+          server-dir: grupovettra.com.br/ # Ajuste para o seu diretório de destino
           # Adiciona uma limpeza de arquivos antigos no servidor
           dangerous-clean-slate: true
