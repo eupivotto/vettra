@@ -1,63 +1,37 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import NextAuth from "next-auth";
+import type { AuthOptions } from 'next-auth';
 
-// GET - Listar todos os produtos
-export async function GET() {
-  try {
-    const produtos = await prisma.produto.findMany({
-      orderBy: { id: 'asc' }
-    });
-    return NextResponse.json(produtos);
-  } catch {
-    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
-  }
-}
+// Configuração simplificada sem dependências do Prisma
+const authOptions: AuthOptions = {
+  pages: {
+    signIn: '/login',
+  },
+  callbacks: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async signIn({ user, account, profile }) {
+      // Por enquanto, permite todos os logins
+      return true;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async session({ session, token }) {
+      // Retorna a sessão sem modificações
+      return session;
+    },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async jwt({ token, user }) {
+      // Retorna o token sem modificações
+      return token;
+    },
+  },
+  providers: [
+    // Seus provedores (atualmente vazio, o que está correto)
+  ],
+  // Usar JWT em vez de banco de dados para sessões
+  session: {
+    strategy: "jwt",
+  },
+};
 
-// POST - Criar novo produto
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { nome, categoria, codigo, medida, img } = body;
+const handler = NextAuth(authOptions);
 
-    const produto = await prisma.produto.create({
-      data: { nome, categoria, codigo, medida, img }
-    });
-
-    return NextResponse.json(produto, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
-  }
-}
-
-// PUT - Atualizar produto existente
-export async function PUT(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { id, nome, categoria, codigo, medida, img } = body;
-
-    const produto = await prisma.produto.update({
-      where: { id: parseInt(id) },
-      data: { nome, categoria, codigo, medida, img }
-    });
-
-    return NextResponse.json(produto);
-  } catch {
-    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
-  }
-}
-
-// DELETE - Remover produto
-export async function DELETE(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { id } = body;
-
-    await prisma.produto.delete({
-      where: { id: parseInt(id) }
-    });
-
-    return NextResponse.json({ message: "Produto removido com sucesso" });
-  } catch {
-    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
-  }
-}
+export { handler as GET, handler as POST };
