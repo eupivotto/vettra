@@ -18,7 +18,20 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "src/generated/**", // Ignora arquivos gerados pelo Prisma
     ],
+  },
+  {
+    rules: {
+      // Ignora variáveis não utilizadas que começam com underscore
+      "@typescript-eslint/no-unused-vars": [
+        "error", 
+        { 
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_"
+        }
+      ],
+    },
   },
 ];
 
