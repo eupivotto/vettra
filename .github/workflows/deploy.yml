@@ -46,7 +46,7 @@ jobs:
             **/.github/**
             README.md
 
-      # CORREÇÃO: SSH Action atualizada com configurações de compatibilidade
+      # CORREÇÃO: SSH Action simplificada com configurações de compatibilidade
       - name: Run Post-Deploy Commands via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -54,10 +54,9 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
-          # Configurações para compatibilidade com servidores antigos
-          cipher: aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-cbc,aes192-cbc,aes256-cbc
-          kex: diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1
           use_insecure_cipher: true
+          cipher: aes128-cbc,aes192-cbc,aes256-cbc,aes128-ctr,aes192-ctr,aes256-ctr
+          debug: true
           script: |
             cd /home3/luca9384/grupovettra.com.br/
             npm install --production
