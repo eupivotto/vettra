@@ -13,7 +13,7 @@ interface Produto {
   img: string;
 }
 
-const categorias = ["Pisos Vinílicos", "Painéis Ripados", "Forros PVC Vinílicos","Forro PVC Branco", "Forro PVC Pigmentado", "Drywall", "Tanques D'Água", "Tubos PVC"];
+const categorias = ["Pisos Vinílicos", "Forros", "Drywall", "Rodapés"];
 
 export default function AdminPainel() {
   const [produtos, setProdutos] = useState<Produto[]>([]);
@@ -36,6 +36,12 @@ export default function AdminPainel() {
       setProdutos(data);
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
+      
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Erro desconhecido ao buscar produtos';
+      
+      alert(`Erro: ${errorMessage}`);
     }
   };
 
@@ -101,7 +107,15 @@ export default function AdminPainel() {
       await fetchProdutos();
     } catch (error) {
       console.error("Erro ao salvar produto:", error);
-      alert(`Erro: ${error.message}`);
+      
+      // Tratamento seguro do erro para TypeScript
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : typeof error === 'string' 
+        ? error 
+        : 'Erro desconhecido ao salvar produto';
+        
+      alert(`Erro: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -149,7 +163,12 @@ export default function AdminPainel() {
         await fetchProdutos();
       } catch (error) {
         console.error("Erro ao deletar produto:", error);
-        alert(`Erro: ${error.message}`);
+        
+        const errorMessage = error instanceof Error 
+          ? error.message 
+          : 'Erro desconhecido ao deletar produto';
+          
+        alert(`Erro: ${errorMessage}`);
       }
     }
   }
