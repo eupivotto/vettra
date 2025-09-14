@@ -1,48 +1,71 @@
-import { NextResponse } from "next/server";
-import { PrismaClient } from "@/generated/prisma";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
-const prisma = new PrismaClient();
-
+// GET - Listar todos os produtos
 export async function GET() {
-  const produtos = await prisma.produto.findMany();
-  return NextResponse.json(produtos);
-}
-
-export async function POST(request: Request) {
-  const dados = await request.json();
   try {
-    const novoProduto = await prisma.produto.create({ data: dados });
-    return NextResponse.json(novoProduto, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ error: "Erro ao criar produto" }, { status: 500 });
-  }
-}
-
-export async function PUT(request: Request) {
-  const dados = await request.json();
-  if (!dados.id) {
-    return NextResponse.json({ error: "ID é obrigatório para atualizar" }, { status: 400 });
-  }
-  try {
-    const atualizado = await prisma.produto.update({
-      where: { id: dados.id },
-      data: dados,
+    const produtos = await prisma.produto.findMany({
+      orderBy: { id: 'asc' }
     });
-    return NextResponse.json(atualizado);
-  } catch (error) {
+    return NextResponse.json(produtos);
+  } catch {
+    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
+  }
+}
+
+// POST - Criar novo produto
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { nome, categoria, codigo, medida, img } = body;
+
+    const produto = await prisma.produto.create({
+      data: { nome, categoria, codigo, medida, img }
+    });
+
+    return NextResponse.json(produto, { status: 201 });
+  } catch {
+    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
+  }
+}
+
+// PUT - Atualizar produto existente
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { id, nome, categoria, codigo, medida, img } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: "ID é obrigatório para atualizar" }, { status: 400 });
+    }
+
+    const produto = await prisma.produto.update({
+      where: { id: parseInt(id) },
+      data: { nome, categoria, codigo, medida, img }
+    });
+
+    return NextResponse.json(produto);
+  } catch {
     return NextResponse.json({ error: "Produto não encontrado ou erro ao atualizar" }, { status: 404 });
   }
 }
 
-export async function DELETE(request: Request) {
-  const { id } = await request.json();
-  if (!id) {
-    return NextResponse.json({ error: "ID é obrigatório para deletar" }, { status: 400 });
-  }
+// DELETE - Remover produto
+export async function DELETE(request: NextRequest) {
   try {
-    await prisma.produto.delete({ where: { id } });
+    const body = await request.json();
+    const { id } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: "ID é obrigatório para deletar" }, { status: 400 });
+    }
+
+    await prisma.produto.delete({
+      where: { id: parseInt(id) }
+    });
+
     return NextResponse.json({ message: "Produto removido com sucesso" });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Erro ao remover produto" }, { status: 500 });
   }
 }
