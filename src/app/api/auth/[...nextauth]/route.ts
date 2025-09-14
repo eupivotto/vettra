@@ -1,12 +1,13 @@
+// src/app/api/auth/[...nextauth]/route.ts
 import NextAuth from "next-auth";
+import type { AuthOptions } from 'next-auth'; // Garanta que está usando AuthOptions aqui também
+import { authConfig } from "../../../../../auth.config";
 
-// Cria um handler de autenticação simples e vazio por enquanto.
-// Isso é suficiente para o NextAuth inicializar e o build passar.
 const handler = NextAuth({
+  ...authConfig,
   providers: [
-    // Deixamos os provedores vazios, pois não temos um sistema de login ainda.
+    // Seus provedores (atualmente vazio)
   ],
-});
+} as AuthOptions);
 
-// Exporta o handler para os métodos GET e POST, corrigindo o erro de "não ser um módulo".
 export { handler as GET, handler as POST };

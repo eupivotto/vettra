@@ -1,14 +1,23 @@
-import type { NextAuthConfig } from "next-auth";
+import type { AuthOptions } from 'next-auth';
 
 export const authConfig = {
-  pages: { signIn: "/login" },
+  pages: {
+    signIn: '/login',
+  },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isOnAdmin = nextUrl.pathname.startsWith("/admin");
-      if (isOnAdmin) return isLoggedIn;
+    // Callbacks padrão que sempre funcionam
+    async signIn({ user, account, profile, email, credentials }) {
+      // Por enquanto, permite todos os logins
       return true;
     },
+    async session({ session, token, user }) {
+      // Você pode adicionar dados extras à sessão aqui no futuro
+      return session;
+    },
+    async jwt({ token, user, account, profile }) {
+      // Você pode modificar o JWT aqui no futuro
+      return token;
+    },
   },
-  providers: [], // definido no handler
-} satisfies NextAuthConfig;
+  providers: [], // Será preenchido no arquivo route.ts
+} satisfies AuthOptions;
