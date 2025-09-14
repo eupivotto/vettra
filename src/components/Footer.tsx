@@ -142,12 +142,12 @@ export default function Footer() {
             <div>
               <h4 className="font-bold mb-2 text-[#bdd8e3]">Atendimento</h4>
               <nav className="flex flex-col space-y-1">
-                <FooterLink href="tel:62999999999">Tel: (62) 99999-9999</FooterLink>
+                <FooterLink href="tel:62999999999">Tel: (62) 99904-7880</FooterLink>
                 <FooterLink href="mailto:contato@vettra.com.br">
                   contato@vettra.com.br
                 </FooterLink>
-                <FooterLink href="https://instagram.com" external>
-                  Instagram
+                <FooterLink href="https://instagram.com/vettra_br" external>
+                  Instagram @vettra_br
                 </FooterLink>
               </nav>
             </div>

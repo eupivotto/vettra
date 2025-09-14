@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { FaWhatsapp } from "react-icons/fa";
 
-const categorias = ["Pisos Vinílicos", "Forros", "Drywall"];
+const categorias = ["Pisos Vinílicos", "Painéis Ripados", "Forros PVC Vinílicos", "Forro PVC Branco", "Forro PVC Pigmentado", "Tubos PVC", "Drywall"];
 
 interface Produto {
   id: number;

@@ -13,7 +13,7 @@ interface Produto {
   img: string;
 }
 
-const categorias = ["Pisos Vinílicos", "Forros", "Drywall"];
+const categorias = ["Pisos Vinílicos", "Painéis Ripados", "Forros PVC Vinílicos","Forro PVC Branco", "Forro PVC Pigmentado", "Drywall", "Tanques D'Água", "Tubos PVC"];
 
 export default function AdminPainel() {
   const [produtos, setProdutos] = useState<Produto[]>([]);

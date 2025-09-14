@@ -13,7 +13,6 @@ export default function Header() {
     { label: "Sobre", href: "/sobre" },
     { label: "Produtos", href: "/produtos" },
     { label: "Serviços", href: "/servicos" },
-    { label: "Orçamento", href: "/orcamento" },
     { label: "Contato", href: "/contato" },
   ];
 
