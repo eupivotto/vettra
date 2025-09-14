@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           # Diretório onde sua aplicação Node.js está configurada no cPanel
-          server-dir: ./ 
+          server-dir: /home3/luca9384/grupovettra.com.br/ 
           # Limpa o diretório de destino antes de enviar os novos arquivos
           dangerous-clean-slate: true
           # Arquivos e pastas a serem enviados (não envia código-fonte desnecessário)
@@ -61,7 +61,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }} # Senha do usuário acima
           script: |
             # Acessa o diretório da aplicação no servidor
-            cd ./
+            cd /home3/luca9384/grupovettra.com.br/
             
             # Instala apenas as dependências de produção
             npm install --production
