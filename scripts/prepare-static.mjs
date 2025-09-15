@@ -1,4 +1,4 @@
-// scripts/prepare-static.js
+// scripts/prepare-static.mjs
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -18,11 +18,17 @@ if (process.env.DEPLOY_TARGET === 'hostgator') {
     }
     fs.renameSync(apiDir, apiBackupDir);
     console.log('✅ API routes movidas para backup (build estático)');
+  } else {
+    console.log('📁 Pasta api não encontrada - provavelmente já foi movida');
   }
 } else {
   // Restaurar API routes para build normal
   if (fs.existsSync(apiBackupDir) && !fs.existsSync(apiDir)) {
     fs.renameSync(apiBackupDir, apiDir);
     console.log('✅ API routes restauradas (build normal)');
+  } else if (!fs.existsSync(apiBackupDir)) {
+    console.log('📁 Nenhum backup de API encontrado');
+  } else {
+    console.log('📁 API routes já estão no lugar correto');
   }
 }

@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/prepare-static.mjs && next dev",
-    "build": "node scripts/prepare-static.mjs && prisma generate && next build", 
-    "build:static": "DEPLOY_TARGET=hostgator node scripts/prepare-static.mjs && prisma generate && next build",
+    "build": "node scripts/prepare-static.mjs && prisma generate && next build",
+    "build:static": "node scripts/prepare-static.mjs && prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "restore-api": "node scripts/prepare-static.mjs"
