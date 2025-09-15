@@ -26,8 +26,10 @@ jobs:
         env:
           DEPLOY_TARGET: hostgator
 
-      - name: Build and export static site
+      - name: Build static site
         run: npm run build:static
+        env:
+          DEPLOY_TARGET: hostgator
 
       - name: Deploy static site to HostGator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -35,7 +37,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: './out/'          # <- deploya a pasta OUT
+          local-dir: './out/'
           server-dir: '/home3/luca9384/grupovettra.com.br/'
           dangerous-clean-slate: true
           exclude: |
@@ -50,5 +52,8 @@ jobs:
         env:
           DEPLOY_TARGET: ""
 
-      - name: Done
-        run: echo "✅ Deploy concluído!"
+      - name: Deploy Success
+        run: |
+          echo "✅ Deploy estático concluído com sucesso!"
+          echo "🌐 Site disponível em: https://grupovettra.com.br"
+          echo "📁 Arquivos HTML deployados da pasta './out/'"
