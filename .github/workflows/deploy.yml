@@ -1,4 +1,4 @@
-name: Deploy Next.js to HostGator
+name: Static Deploy Next.js to HostGator
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -17,43 +18,25 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm ci
 
-      # PREPARAR PARA BUILD ESTÁTICO (remove API routes)
-      - name: Prepare for Static Build
-        run: node scripts/prepare-static.mjs  # .mjs instead of .js
+      - name: Prepare for static build (remove API routes)
+        run: node scripts/prepare-static.mjs
         env:
           DEPLOY_TARGET: hostgator
 
-      # RESTAURAR API ROUTES APÓS BUILD  
-      - name: Restore API Routes
-        run: node scripts/prepare-static.mjs  # .mjs instead of .js
-        env:
-          DEPLOY_TARGET: ''
+      - name: Build and export static site
+        run: npm run build:static
 
-      - name: Generate Prisma Client
-        run: npx prisma generate
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      
-      # BUILD PARA HOSTGATOR (ESTÁTICO)
-      - name: Build Static Site for HostGator
-        run: npx next build
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          DEPLOY_TARGET: hostgator
-      
-      # DEPLOY DOS ARQUIVOS ESTÁTICOS
-      - name: Deploy to HostGator via FTP
+      - name: Deploy static site to HostGator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: './out/'  # ✅ CORRIGIDO: hífen, não underscore
-          server-dir: '/home3/luca9384/grupovettra.com.br/'  # ✅ CORRIGIDO: hífen, não underscore
+          local-dir: './out/'          # <- deploya a pasta OUT
+          server-dir: '/home3/luca9384/grupovettra.com.br/'
           dangerous-clean-slate: true
           exclude: |
             **/.git*
@@ -62,14 +45,10 @@ jobs:
             **/.github/**
             README.md
 
-      # RESTAURAR API ROUTES APÓS BUILD
-      - name: Restore API Routes
-        run: node scripts/prepare-static.js
+      - name: Restore API routes after build
+        run: node scripts/prepare-static.mjs
         env:
-          DEPLOY_TARGET: ''
+          DEPLOY_TARGET: ""
 
-      - name: Deploy Success
-        run: |
-          echo "✅ Deploy estático concluído com sucesso!"
-          echo "🌐 Site disponível em: https://grupovettra.com.br"
-          echo "📁 Arquivos HTML deployados da pasta './out/'"
+      - name: Done
+        run: echo "✅ Deploy concluído!"
