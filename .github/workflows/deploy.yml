@@ -20,6 +20,18 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      # PREPARAR PARA BUILD ESTÁTICO (remove API routes)
+      - name: Prepare for Static Build
+        run: node scripts/prepare-static.mjs  # .mjs instead of .js
+        env:
+          DEPLOY_TARGET: hostgator
+
+      # RESTAURAR API ROUTES APÓS BUILD  
+      - name: Restore API Routes
+        run: node scripts/prepare-static.mjs  # .mjs instead of .js
+        env:
+          DEPLOY_TARGET: ''
+
       - name: Generate Prisma Client
         run: npx prisma generate
         env:
@@ -27,11 +39,11 @@ jobs:
       
       # BUILD PARA HOSTGATOR (ESTÁTICO)
       - name: Build Static Site for HostGator
-        run: npm run build
+        run: npx next build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          DEPLOY_TARGET: hostgator  # 🎯 Esta variável ativa o modo export
+          DEPLOY_TARGET: hostgator
       
       # DEPLOY DOS ARQUIVOS ESTÁTICOS
       - name: Deploy to HostGator via FTP
@@ -40,8 +52,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local_dir: './out/'  # 🎯 Pasta com arquivos HTML gerados
-          server_dir: '/home3/luca9384/grupovettra.com.br/'
+          local-dir: './out/'  # ✅ CORRIGIDO: hífen, não underscore
+          server-dir: '/home3/luca9384/grupovettra.com.br/'  # ✅ CORRIGIDO: hífen, não underscore
           dangerous-clean-slate: true
           exclude: |
             **/.git*
@@ -49,6 +61,12 @@ jobs:
             **/node_modules/**
             **/.github/**
             README.md
+
+      # RESTAURAR API ROUTES APÓS BUILD
+      - name: Restore API Routes
+        run: node scripts/prepare-static.js
+        env:
+          DEPLOY_TARGET: ''
 
       - name: Deploy Success
         run: |

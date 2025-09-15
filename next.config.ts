@@ -28,15 +28,10 @@ const nextConfig: NextConfig = {
     // Configurações experimentais podem ser adicionadas aqui conforme necessário
   },
   
-  // NOVAS CONFIGURAÇÕES PARA EXPORT ESTÁTICO (só ativam quando DEPLOY_TARGET=hostgator)
+  // CONFIGURAÇÕES PARA EXPORT ESTÁTICO (só ativam quando DEPLOY_TARGET=hostgator)
   ...(process.env.DEPLOY_TARGET === 'hostgator' && {
     trailingSlash: true,
     basePath: '',
-    
-    // Desabilita features que não funcionam com export estático
-    swcMinify: true,
-    
-    // Configuração para export estático
     distDir: '.next',
   }),
 };
