@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: './out/'
-          server-dir: './grupovettra.com.br/'
+          server-dir: '/home3/luca9384/grupovettra.com.br/'
           dangerous-clean-slate: true
           exclude: |
             **/.git*
