@@ -1,4 +1,4 @@
-name: Deploy Next.js App to HostGator
+name: Deploy Next.js to HostGator
 
 on:
   push:
@@ -25,19 +25,23 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
       
-      - name: Build Application
+      # BUILD PARA HOSTGATOR (ESTÁTICO)
+      - name: Build Static Site for HostGator
         run: npm run build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          DEPLOY_TARGET: hostgator  # 🎯 Esta variável ativa o modo export
       
+      # DEPLOY DOS ARQUIVOS ESTÁTICOS
       - name: Deploy to HostGator via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /home3/luca9384/grupovettra.com.br/ 
+          local_dir: './out/'  # 🎯 Pasta com arquivos HTML gerados
+          server_dir: '/home3/luca9384/grupovettra.com.br/'
           dangerous-clean-slate: true
           exclude: |
             **/.git*
@@ -46,9 +50,8 @@ jobs:
             **/.github/**
             README.md
 
-      # SSH removido - será configurado manualmente via cPanel
       - name: Deploy Success
         run: |
-          echo "✅ Deploy concluído com sucesso!"
-          echo "📁 Arquivos enviados para: /home3/luca9384/grupovettra.com.br/"
-          echo "🔧 Configure o banco de dados manualmente via cPanel"
+          echo "✅ Deploy estático concluído com sucesso!"
+          echo "🌐 Site disponível em: https://grupovettra.com.br"
+          echo "📁 Arquivos HTML deployados da pasta './out/'"
