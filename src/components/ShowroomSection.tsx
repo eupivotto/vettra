@@ -7,7 +7,7 @@ export default function ShowroomSection() {
       <div className="flex flex-col md:flex-row w-full min-h-[480px]">
         {/* Bloco texto - esquerda */}
         <div className="flex-1 flex flex-col justify-center items-start bg-[#ECF6FA] px-6 md:px-16 py-12 md:py-20 gap-5">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-primary mb-2">Showroom VETTRA</h2>
+          <h2 className="text-2xl md:text-5xl font-extrabold text-primary mb-2">Showroom VETTRA</h2>
           <div className="bg-[#045060] text-white font-semibold text-lg py-3 px-4 rounded-lg flex items-center gap-3 shadow-md mb-4">
             <svg width="32" height="32" fill="currentColor"><circle cx="16" cy="16" r="16" fill="#fff3" /><path d="M14 17v5h-2v-7h2L18.7 15.7 17 17z" fill="#fff" /></svg>
             Localizado na movimentada Avenida Vera Cruz - Goiânia, nosso espaço é um ponto de encontro entre design, técnica e inspiração.

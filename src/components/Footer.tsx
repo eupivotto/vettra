@@ -165,7 +165,7 @@ export default function Footer() {
 
         {/* COLUNA 3 – IMAGEM */}
         <div className="md:col-span-3 flex justify-center md:justify-end">
-          <div className="w-100 h-44 relative">
+          <div className="w-full h-44 relative">
             <Image
               src="/images/logo-vettra.png" // coloque sua imagem em /public
               alt="Atendente Vettra"
@@ -179,7 +179,7 @@ export default function Footer() {
       </div>
 
       {/* LINHA FINAL */}
-      <div className="mt-10 border-t border-[#bdd8e3]/40 pt-4 text-center text-sm text-[#bdd8e3]">
+      <div className="mt-10 border-t border-[#bdd8e3]/40 pt-4 text-center text-sm text-[#bdd8e3] px-4">
         &copy; {new Date().getFullYear()} Vettra Soluções Construtivas. Todos os
         direitos reservados.
       </div>

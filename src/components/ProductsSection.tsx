@@ -43,7 +43,7 @@ export default function ProductsSection() {
         Nossos Produtos
       </h2>
 
-      <div className="flex justify-center mb-8 gap-8">
+      <div className="flex justify-center mb-8 gap-4 flex-wrap px-4">
         {categorias.map((categoria) => (
           <button
             key={categoria}
@@ -59,8 +59,8 @@ export default function ProductsSection() {
         ))}
       </div>
 
-      <div className="overflow-x-auto">
-        <div className="flex gap-8 justify-center min-w-[700px]">
+      <div className="w-full px-4">
+        <div className="flex gap-8 justify-center flex-wrap">
           {produtosFiltrados.map((p) => (
             <div key={p.id} className="flex flex-col items-center max-w-xs">
               <div className="w-48 h-48 rounded-lg shadow-md overflow-hidden mb-3 transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer">
